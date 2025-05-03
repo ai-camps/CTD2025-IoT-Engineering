@@ -3,16 +3,21 @@
 // put function declarations here:
 int myFunction(int, int);
 
-void setup() {
+void setup()
+{
   // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(9600); // Initialize serial communication at 9600 baud rate
 }
 
-void loop() {
+void loop()
+{
   // put your main code here, to run repeatedly:
+  Serial.println("Hello World !");
+  delay(1000); // Wait for 1 second before printing again
 }
 
 // put function definitions here:
-int myFunction(int x, int y) {
+int myFunction(int x, int y)
+{
   return x + y;
 }
