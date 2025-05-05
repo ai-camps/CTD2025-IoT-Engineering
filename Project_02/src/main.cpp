@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+// Constants
+const unsigned long PAUSE_TIME = 1000; // Delay time in milliseconds
+
 // put function declarations here:
 int myFunction(int, int);
 
@@ -13,7 +16,7 @@ void loop()
 {
   // put your main code here, to run repeatedly:
   Serial.println("Hello World !");
-  delay(1000); // Wait for 1 second before printing again
+  delay(PAUSE_TIME); // Wait for specified time before printing again
 }
 
 // put function definitions here:
