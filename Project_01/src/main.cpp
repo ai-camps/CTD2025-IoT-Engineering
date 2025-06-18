@@ -1,18 +1,23 @@
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
+void setup()
+{
+  // Initialize serial communication at 115200 baud rate
+  Serial.begin(115200);
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  // Wait for serial port to connect (needed for some boards)
+  while (!Serial)
+  {
+    ; // Wait for serial port to connect
+  }
+
+  // Print Hello World message
+  Serial.println("Hello World!");
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop()
+{
+  // Print Hello World every 2 seconds
+  Serial.println("Hello World!");
+  delay(2000);
 }
