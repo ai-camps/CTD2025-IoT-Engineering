@@ -5,72 +5,23 @@
 #include <WiFiClientSecure.h>
 
 // WiFi credentials
-constexpr const char *ssid = "Your_WiFi_SSID";
-constexpr const char *password = "Your_WiFi_Password";
+constexpr char *ssid = "Your_WiFi_SSID"; // Replace with your WiFi SSID
+constexpr char *password = "12345678";   // Replace with your WiFi password
 
 constexpr int WIFI_LED_PIN = 12;            // WiFi connection status indicator
 constexpr int DEVICE_REGISTER_LED_PIN = 13; // Device register status on WordPress indicator
 
 // WordPress API endpoint (use HTTPS for security)
-constexpr const char *apiEndpoint = "https://www.ai-camps.com/wp-json/device/v1/info";
+constexpr char *apiEndpoint = "https://www.ai-camps.com/wp-json/device/v1/info";
 
 // API Token
-constexpr const char *apiToken = "CTD2025-TOKEN-20250630";
+constexpr char *apiToken = "CTD2025-TOKEN-20250630";
 
 // Device information
 String chipModel; // Will be initialized in setup()
 String deviceID;  // Will be initialized in setup()
-constexpr const char *ownerOrg = "CTD2025";
-constexpr const char *ownerEmail = "jun.wen@ai-camps.com";
-
-// Function prototypes
-// Initializes the WiFi connection using the provided SSID and password
-void setupWiFi();
-// Registers the device with the remote WordPress API server
-void registerDevice();
-
-void setup()
-{
-    Serial.begin(115200);
-    delay(1000);
-
-    // Initialize LED pins
-    pinMode(WIFI_LED_PIN, OUTPUT);
-    pinMode(DEVICE_REGISTER_LED_PIN, OUTPUT);
-    digitalWrite(WIFI_LED_PIN, LOW);
-    digitalWrite(DEVICE_REGISTER_LED_PIN, LOW);
-
-    // Initialize device ID and chip model
-    deviceID = String(ESP.getEfuseMac(), HEX);
-    chipModel = ESP.getChipModel();
-
-    Serial.print("Device ID: ");
-    Serial.println(deviceID);
-    Serial.print("Chip Model: ");
-    Serial.println(chipModel);
-
-    setupWiFi();
-    registerDevice();
-}
-
-void loop()
-{
-    // Re-register device every hour
-    static unsigned long lastRegistration = 0;
-    const unsigned long registrationInterval = 3600000; // 1 hour
-
-    if (millis() - lastRegistration >= registrationInterval)
-    {
-        if (WiFi.status() != WL_CONNECTED)
-        {
-            setupWiFi();
-        }
-        registerDevice();
-        lastRegistration = millis();
-    }
-
-    delay(1000);
-}
+constexpr char *ownerOrg = "CTD2025";
+constexpr char *ownerEmail = "jun.wen@ai-camps.com";
 
 void setupWiFi()
 {
@@ -153,4 +104,47 @@ void registerDevice()
         Serial.println("WiFi not connected!");
         digitalWrite(WIFI_LED_PIN, LOW); // Turn off WiFi LED when disconnected
     }
+}
+
+void setup()
+{
+    Serial.begin(115200);
+    delay(1000);
+
+    // Initialize LED pins
+    pinMode(WIFI_LED_PIN, OUTPUT);
+    pinMode(DEVICE_REGISTER_LED_PIN, OUTPUT);
+    digitalWrite(WIFI_LED_PIN, LOW);
+    digitalWrite(DEVICE_REGISTER_LED_PIN, LOW);
+
+    // Initialize device ID and chip model
+    deviceID = String(ESP.getEfuseMac(), HEX);
+    chipModel = ESP.getChipModel();
+
+    Serial.print("Device ID: ");
+    Serial.println(deviceID);
+    Serial.print("Chip Model: ");
+    Serial.println(chipModel);
+
+    setupWiFi();
+    registerDevice();
+}
+
+void loop()
+{
+    // Re-register device every hour
+    static unsigned long lastRegistration = 0;
+    const unsigned long registrationInterval = 3600000; // 1 hour
+
+    if (millis() - lastRegistration >= registrationInterval)
+    {
+        if (WiFi.status() != WL_CONNECTED)
+        {
+            setupWiFi();
+        }
+        registerDevice();
+        lastRegistration = millis();
+    }
+
+    delay(1000);
 }
