@@ -6,8 +6,8 @@
 #include <esp_system.h> // For ESP.getEfuseMac() and ESP.getChipModel()
 
 // WiFi credentials
-constexpr const char *ssid = "Your_WiFi_SSID"; // ! Replace with Classroom WiFi SSID
-constexpr const char *password = "12345678";   // ! Replace with Classroom WiFi password
+constexpr const char *ssid = "Your_WiFi_SSID"; // !! Replace with Classroom WiFi SSID
+constexpr const char *password = "12345678";   // !! Replace with Classroom WiFi password
 
 constexpr int WIFI_LED_PIN = 12;            // WiFi connection status indicator
 constexpr int DEVICE_REGISTER_LED_PIN = 13; // Device register status on WordPress indicator
