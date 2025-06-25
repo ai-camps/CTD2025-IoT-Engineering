@@ -29,8 +29,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 DHT dht11(DHT11_PIN, DHT11);
 
 // WiFi settings
-constexpr auto WIFI_SSID = "WiFi_TEST";
-constexpr auto WIFI_PASSWORD = "16032390";
+constexpr auto WIFI_SSID = "your_ssid";         // replace with your WiFi SSID
+constexpr auto WIFI_PASSWORD = "your_password"; // replace with your WiFi password
 
 // Function prototypes
 void initOled();
