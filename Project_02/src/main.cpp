@@ -19,5 +19,5 @@ void loop()
 {
   // Print Hello World every 2 seconds
   Serial.println("Hello World!");
-  delay(2000);
+  delay(3000);
 }
