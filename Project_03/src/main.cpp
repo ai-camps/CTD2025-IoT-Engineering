@@ -22,7 +22,7 @@ constexpr const char *apiToken = "CTD2025-TOKEN-20250630";
 String chipModel; // Will be initialized in setup()
 String deviceID;  // Will be initialized in setup()
 constexpr const char *ownerOrg = "CTD2025";
-constexpr const char *ownerEmail = "jun.wen@ai-camps.com"; // ! Replace with your email
+constexpr const char *ownerEmail = "jun.wen@ai-camps.com"; // !! Replace with your email
 
 // Declare functions prototypes
 void setupWiFi();      // Function to set up WiFi connection
