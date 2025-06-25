@@ -27,6 +27,9 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // DHT sensor object
 DHT dht11(DHT11_PIN, DHT11);
 
+// Function prototypes
+void initOled();
+
 void setup()
 {
     // Initialize serial communication for debugging
@@ -43,25 +46,8 @@ void setup()
     // Initialize DHT sensor
     dht11.begin();
 
-    // Initialize I2C with custom pins
-    Wire.begin(SDA_PIN, SCL_PIN);
-
     // Initialize OLED display
-    if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
-    {
-        for (;;)
-            ; // Don't proceed, loop forever
-    }
-
-    // Clear the display buffer
-    display.clearDisplay();
-
-    // Display startup message
-    display.setTextSize(1);
-    display.setTextColor(SSD1306_WHITE);
-    display.setCursor(0, 0);
-    display.println("Initializing...");
-    display.display();
+    initOled();
 
     // Turn on LED to indicate setup is complete
     digitalWrite(SETUP_LED_PIN, HIGH); // Turn on setup LED
@@ -130,4 +116,24 @@ void loop()
     delay(1000);
     digitalWrite(BUZZER_PIN, LOW);
     delay(1000);
+}
+
+// Function definitions
+void initOled()
+{
+    // Initialize I2C with custom pins
+    Wire.begin(SDA_PIN, SCL_PIN);
+
+    // Initialize OLED display
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+
+    // Clear the display buffer
+    display.clearDisplay();
+
+    // Display startup message
+    display.setTextSize(1);              // Set text size
+    display.setTextColor(SSD1306_WHITE); // Set text color
+    display.setCursor(0, 0);             // Set cursor position
+    display.println("Initializing...");  // Display startup message
+    display.display();                   // Display the message
 }
