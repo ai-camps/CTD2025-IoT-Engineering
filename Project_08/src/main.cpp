@@ -4,7 +4,7 @@
 constexpr auto SETUP_LED_PIN = 12; // Setup LED pin
 constexpr auto LOOP_LED_PIN = 13;  // Loop LED pin
 constexpr auto TILT_PIN = 6;       // Tilt sensor pin
-constexpr auto SOUND_PIN = 10;     // Sound sensor pin
+constexpr auto SOUND_PIN = 1;     // Sound sensor pin
 
 void setup()
 {
