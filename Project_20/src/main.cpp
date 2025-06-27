@@ -19,7 +19,7 @@ constexpr auto DHT11_PIN = 8;      // DHT11 pin
 constexpr auto GREEN_LED_PIN = 2;  // Green LED pin
 constexpr auto RED_LED_PIN = 3;    // Red LED pin
 constexpr auto BLUE_LED_PIN = 0;   // Blue LED pin
-constexpr auto FAN_PIN = 1;        // Fan pin
+constexpr auto BUZZER_PIN = 1;     // Buzzer pin
 
 // PWM settings for red LED
 constexpr auto RED_LED_PWM_FREQUENCY = 5000; // PWM frequency in Hz
@@ -28,10 +28,12 @@ constexpr auto RED_LED_PWM_CHANNEL = 0;      // PWM channel for red LED
 constexpr auto RED_LED_BLINK_INTERVAL = 500; // Blink interval in milliseconds
 constexpr auto RED_LED_PWM_DUTY_CYCLE = 128; // PWM duty cycle for blinking (50% brightness)
 
-// PWM settings for fan control
-constexpr auto FAN_PWM_CHANNEL = 1;       // PWM channel for fan
-constexpr auto FAN_PWM_FREQUENCY = 25000; // Fan PWM frequency (25kHz for quiet operation)
-constexpr auto FAN_SPEED_NORMAL = 102;    // 40% of 255 for normal temperature
+// PWM settings for buzzer
+constexpr auto BUZZER_PWM_FREQUENCY_HIGH = 1000; // PWM frequency in Hz
+constexpr auto BUZZER_PWM_FREQUENCY_LOW = 100;   // PWM frequency in Hz
+constexpr auto BUZZER_PWM_RESOLUTION = 8;        // PWM resolution (8-bit = 0-255)
+constexpr auto BUZZER_PWM_CHANNEL = 1;           // PWM channel for buzzer
+constexpr auto BUZZER_PWM_DUTY_CYCLE = 128;      // PWM duty cycle for buzzer (50% brightness)
 
 // OLED display settings
 constexpr auto SCREEN_WIDTH = 128;         // OLED display width
@@ -82,9 +84,6 @@ bool isGreenLEDOn = false; // Green LED flag
 bool isRedLEDOn = false;   // Red LED flag
 bool isBlueLEDOn = false;  // Blue LED flag
 
-// Fan control variable
-int fanSpeed = 0; // Current fan speed (0-255)
-
 // PWM blinking variables
 unsigned long lastBlinkTime = 0; // Timer for red LED blinking
 bool isRedLEDBlinking = false;   // Flag to track red LED blinking state
@@ -113,24 +112,20 @@ void setup()
     pinMode(GREEN_LED_PIN, OUTPUT); // Green LED pin
     pinMode(RED_LED_PIN, OUTPUT);   // Red LED pin
     pinMode(BLUE_LED_PIN, OUTPUT);  // Blue LED pin
-    pinMode(FAN_PIN, OUTPUT);       // Fan pin
+    pinMode(BUZZER_PIN, OUTPUT);    // Buzzer pin
 
     // Configure PWM for red LED
     ledcSetup(RED_LED_PWM_CHANNEL, RED_LED_PWM_FREQUENCY, RED_LED_PWM_RESOLUTION);
     ledcAttachPin(RED_LED_PIN, RED_LED_PWM_CHANNEL);
 
-    // Configure PWM for fan control
-    ledcSetup(FAN_PWM_CHANNEL, FAN_PWM_FREQUENCY, RED_LED_PWM_RESOLUTION);
-    ledcAttachPin(FAN_PIN, FAN_PWM_CHANNEL);
+    // Configure PWM for buzzer
+    ledcSetup(BUZZER_PWM_CHANNEL, BUZZER_PWM_FREQUENCY_HIGH, BUZZER_PWM_RESOLUTION);
+    ledcAttachPin(BUZZER_PIN, BUZZER_PWM_CHANNEL);
 
     // Initialize all LEDs to OFF state
     digitalWrite(GREEN_LED_PIN, LOW);
     ledcWrite(RED_LED_PWM_CHANNEL, 0); // Turn off red LED via PWM
     digitalWrite(BLUE_LED_PIN, LOW);
-
-    // Initialize fan to OFF state
-    ledcWrite(FAN_PWM_CHANNEL, 0);
-    fanSpeed = 0;
 
     // Initialize LED flags
     isGreenLEDOn = false;
@@ -398,7 +393,6 @@ void readDht11()
             display.println("Temp_C: " + String(temperatureC) + " C");
             display.println("Temp_F: " + String(temperatureF) + " F");
             display.println("Humidity: " + String(humidity) + " %");
-            display.println("Fan: " + String(fanSpeed) + "/255 (" + String((fanSpeed * 100) / 255) + "%)");
             display.display();
         }
     }
@@ -413,6 +407,7 @@ void setLED()
         digitalWrite(GREEN_LED_PIN, HIGH); // Green LED for normal temperature
         ledcWrite(RED_LED_PWM_CHANNEL, 0); // Turn off red LED via PWM
         digitalWrite(BLUE_LED_PIN, LOW);
+        ledcWrite(BUZZER_PWM_CHANNEL, 0); // Turn off buzzer
         isGreenLEDOn = true;
         isRedLEDOn = false;
         isBlueLEDOn = false;
@@ -424,6 +419,7 @@ void setLED()
         digitalWrite(GREEN_LED_PIN, LOW);  // Turn off other LEDs
         ledcWrite(RED_LED_PWM_CHANNEL, 0); // Turn off red LED via PWM
         digitalWrite(BLUE_LED_PIN, HIGH);  // Blue LED for low temperature
+        ledcWrite(BUZZER_PWM_CHANNEL, 0);  // Turn off buzzer
         isGreenLEDOn = false;
         isRedLEDOn = false;
         isBlueLEDOn = true;
@@ -445,33 +441,15 @@ void setLED()
 // Function to set Fan status based on temperature
 void setFan()
 {
-    float temperatureC = dht11.readTemperature(); // Get current temperature
-
-    // Check if temperature reading is valid
-    if (isnan(temperatureC))
+    // Set Fan based on temperature status
+    if (isTemperatureTooHigh)
     {
-        Serial.println("Invalid temperature reading for fan control");
-        return;
-    }
-
-    // Calculate fan speed based on temperature
-    if (temperatureC > TEMP_C_HIGH_THRESHOLD)
-    {
-        // Calculate excess temperature percentage
-        float excessPercent = ((temperatureC - TEMP_C_HIGH_THRESHOLD) / TEMP_C_HIGH_THRESHOLD) * 100;
-        fanSpeed = FAN_SPEED_NORMAL + (excessPercent * 255 / 100);
-        fanSpeed = constrain(fanSpeed, 0, 255); // Ensure within valid range
-        Serial.println("Temperature: " + String(temperatureC) + "°C - Fan speed: " + String(fanSpeed) + " (" + String((fanSpeed * 100) / 255) + "%)");
+        digitalWrite(BUZZER_PIN, HIGH); // Fan for high temperature
     }
     else
     {
-        // Turn off fan when temperature is normal or below
-        fanSpeed = 0;
-        Serial.println("Temperature: " + String(temperatureC) + "°C - Fan OFF");
+        digitalWrite(BUZZER_PIN, LOW); // Fan for low temperature
     }
-
-    // Apply fan speed via PWM
-    ledcWrite(FAN_PWM_CHANNEL, fanSpeed);
 }
 
 // Function to update red LED blinking state
@@ -483,10 +461,12 @@ void updateRedLEDBlink()
         if (isRedLEDOn)
         {
             ledcWrite(RED_LED_PWM_CHANNEL, RED_LED_PWM_DUTY_CYCLE); // Turn on red LED with PWM
+            ledcWrite(BUZZER_PWM_CHANNEL, BUZZER_PWM_DUTY_CYCLE);   // Turn on buzzer with high pitch
         }
         else
         {
             ledcWrite(RED_LED_PWM_CHANNEL, 0); // Turn off red LED
+            ledcWrite(BUZZER_PWM_CHANNEL, 0);  // Turn off buzzer
         }
 
         isRedLEDOn = !isRedLEDOn; // Toggle the flag
