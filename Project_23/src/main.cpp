@@ -21,6 +21,7 @@ constexpr auto RED_LED_PIN = 3;    // Red LED pin
 constexpr auto BLUE_LED_PIN = 0;   // Blue LED pin
 constexpr auto FAN_PIN = 1;        // Fan pin
 constexpr auto BUTTON_PIN = 10;    // Button pin
+constexpr auto TILT_PIN = 6;       // Tilt sensor pin
 
 // PWM settings for red LED
 constexpr auto RED_LED_PWM_FREQUENCY = 5000; // PWM frequency in Hz
@@ -100,6 +101,7 @@ void setLED();                // Turn on/off Green, Red, Blue LED
 void setFan();                // Turn on/off Fan
 void updateRedLEDBlink();     // Update red LED blinking state
 void IRAM_ATTR pressButton(); // Button pressed interrupt service routine
+void IRAM_ATTR triggerTilt(); // Tilt sensor interrupt service routine
 
 void setup()
 {
@@ -117,9 +119,13 @@ void setup()
     pinMode(BLUE_LED_PIN, OUTPUT);  // Blue LED pin
     pinMode(FAN_PIN, OUTPUT);       // Fan pin
 
-    // Attach interrupt to button pin
+    // Configure button pin and attach interrupt
     pinMode(BUTTON_PIN, INPUT_PULLUP); // Button pin with internal pull-up
     attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), pressButton, FALLING);
+
+    // Configure tilt sensor pin and attach interrupt
+    pinMode(TILT_PIN, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(TILT_PIN), triggerTilt, CHANGE);
 
     // Configure PWM for red LED
     ledcSetup(RED_LED_PWM_CHANNEL, RED_LED_PWM_FREQUENCY, RED_LED_PWM_RESOLUTION);
@@ -508,10 +514,31 @@ void IRAM_ATTR pressButton()
     {
         fanSpeed = 255;
         ledcWrite(FAN_PWM_CHANNEL, fanSpeed);
+        Serial.println("Button pressed - Fan ON");
     }
     else
     {
         fanSpeed = 0;
         ledcWrite(FAN_PWM_CHANNEL, fanSpeed);
+        Serial.println("Button pressed - Fan OFF");
+    }
+}
+
+// Tilt sensor interrupt service routine
+void IRAM_ATTR triggerTilt()
+{
+    // Read the current state of the tilt sensor
+    bool tiltState = digitalRead(TILT_PIN);
+
+    // Control red LED based on tilt state
+    if (tiltState == LOW)
+    {
+        // Tilt sensor is triggered (tilted) - turn on red LED
+        ledcWrite(RED_LED_PWM_CHANNEL, 255); // Full brightness
+    }
+    else
+    {
+        // Tilt sensor is not triggered (not tilted) - turn off red LED
+        ledcWrite(RED_LED_PWM_CHANNEL, 0);
     }
 }
