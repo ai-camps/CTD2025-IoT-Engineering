@@ -29,8 +29,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 DHT dht11(DHT11_PIN, DHT11);
 
 // WiFi settings
-constexpr const char *WIFI_SSID = "sesplearningstudios"; // !! CTD Classroom WiFi SSID
-constexpr const char *WIFI_PASSWORD = "@nn3nb3rg";       // !! CTD Classroom WiFi password
+constexpr auto WIFI_SSID = "sesplearningstudios"; // CTD WiFi
+constexpr auto WIFI_PASSWORD = "@nn3nb3rg";       // CTD WiFi password
 
 // Function prototypes
 void initOled();

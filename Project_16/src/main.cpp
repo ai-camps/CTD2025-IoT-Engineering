@@ -38,8 +38,8 @@ constexpr auto DHT11_UPDATE_INTERVAL = 5000; // 5 seconds
 unsigned long lastDht11Read = 0;             // Timer for DHT11 readings
 
 // WiFi settings
-constexpr auto WIFI_SSID = "WiFi_TEST";    // replace with your WiFi SSID
-constexpr auto WIFI_PASSWORD = "16032390"; // replace with your WiFi password
+constexpr auto WIFI_SSID = "sesplearningstudios"; // CTD WiFi
+constexpr auto WIFI_PASSWORD = "@nn3nb3rg";       // CTD WiFi password
 bool isWiFiConnected = false;
 
 // NTP settings

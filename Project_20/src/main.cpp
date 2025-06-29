@@ -57,8 +57,8 @@ constexpr auto TEMP_C_HIGH_THRESHOLD = 25;   // Temperature too high threshold
 constexpr auto TEMP_C_LOW_THRESHOLD = 18;    // Temperature too low threshold
 
 // WiFi settings
-constexpr auto WIFI_SSID = "WiFi_TEST";    // replace with your WiFi SSID
-constexpr auto WIFI_PASSWORD = "16032390"; // replace with your WiFi password
+constexpr auto WIFI_SSID = "sesplearningstudios"; // CTD WiFi
+constexpr auto WIFI_PASSWORD = "@nn3nb3rg";       // CTD WiFi password
 bool isWiFiConnected = false;
 
 // NTP settings

@@ -6,8 +6,8 @@
 #include <esp_system.h> // For ESP.getEfuseMac() and ESP.getChipModel()
 
 // WiFi credentials
-constexpr const char *ssid = "sesplearningstudios"; // !! CTD Classroom WiFi SSID
-constexpr const char *password = "@nn3nb3rg";       // !! CTD Classroom WiFi password
+constexpr auto WIFI_SSID = "sesplearningstudios"; // CTD WiFi
+constexpr auto WIFI_PASSWORD = "@nn3nb3rg";       // CTD WiFi password
 
 constexpr int WIFI_LED_PIN = 12;            // WiFi connection status indicator
 constexpr int DEVICE_REGISTER_LED_PIN = 13; // Device register status on WordPress indicator
@@ -75,7 +75,7 @@ void setupWiFi()
 {
     Serial.println("Connecting to WiFi...");
     digitalWrite(WIFI_LED_PIN, LOW); // Turn off WiFi LED while connecting
-    WiFi.begin(ssid, password);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
     while (WiFi.status() != WL_CONNECTED)
     {
