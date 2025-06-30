@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Arduino.h>
 
 // LED pin definition
 constexpr auto SETUP_LED_PIN = 12;
