@@ -1,40 +1,14 @@
 #include <Arduino.h>
 #include <DHT.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#include <WiFi.h>
 
 // LED pin definition
-constexpr auto SETUP_LED_PIN = 12; // Setup LED pin
-constexpr auto LOOP_LED_PIN = 13;  // Loop LED pin
-constexpr auto DHT11_PIN = 8;      // DHT11 pin
-constexpr auto GREEN_LED_PIN = 2;  // Green LED pin
-constexpr auto RED_LED_PIN = 3;    // Red LED pin
-constexpr auto BLUE_LED_PIN = 0;   // Blue LED pin
-constexpr auto BUZZER_PIN = 1;     // Buzzer pin
+constexpr auto DHT11_PIN = 18; // DHT11 pin
 
-// OLED display settings
-constexpr auto SCREEN_WIDTH = 128;         // OLED display width
-constexpr auto SCREEN_HEIGHT = 64;         // OLED display height
-constexpr auto OLED_RESET = -1;            // Reset pin (or -1 if sharing Arduino reset pin)
-constexpr auto SDA_PIN = 4;                // I2C SDA pin
-constexpr auto SCL_PIN = 5;                // I2C SCL pin
-constexpr auto SSD1306_I2C_ADDRESS = 0x3C; // OLED display address
-
-// Create display object
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+// User email for notifications
+constexpr auto USER_EMAIL = "you@example.com"; // Replace with your email
 
 // DHT sensor object
 DHT dht11(DHT11_PIN, DHT11);
-
-// WiFi settings
-constexpr auto WIFI_SSID = "sesplearningstudios"; // CTD WiFi
-constexpr auto WIFI_PASSWORD = "@nn3nb3rg";       // CTD WiFi password
-
-// Function prototypes
-void initOled();
-void connectWiFi();
 
 void setup()
 {
@@ -42,28 +16,10 @@ void setup()
     Serial.begin(115200);
 
     // Configure LED pin as output
-    pinMode(SETUP_LED_PIN, OUTPUT); // Setup LED
-    pinMode(LOOP_LED_PIN, OUTPUT);  // Loop LED
-    pinMode(GREEN_LED_PIN, OUTPUT); // Green LED pin
-    pinMode(RED_LED_PIN, OUTPUT);   // Red LED pin
-    pinMode(BLUE_LED_PIN, OUTPUT);  // Blue LED pin
-    pinMode(BUZZER_PIN, OUTPUT);    // Buzzer pin
+    pinMode(DHT11_PIN, OUTPUT); // Setup LED
 
     // Initialize DHT sensor
     dht11.begin();
-
-    // Initialize OLED display
-    initOled();
-
-    // Connect to WiFi
-    connectWiFi();
-
-    // Turn on LED to indicate setup is complete
-    digitalWrite(SETUP_LED_PIN, HIGH); // Turn on setup LED
-
-    // Print confirmation message
-    Serial.println("Setup completed successfully - LED on GPIO 12 is now ON");
-    Serial.println("DHT11 sensor initialized");
 
     // Wait for 3 seconds
     delay(3000);
@@ -71,20 +27,6 @@ void setup()
 
 void loop()
 {
-    // Main loop - LED remains on
-    digitalWrite(GREEN_LED_PIN, HIGH);
-    delay(1000);
-    digitalWrite(GREEN_LED_PIN, LOW);
-    delay(1000);
-    digitalWrite(RED_LED_PIN, HIGH);
-    delay(1000);
-    digitalWrite(RED_LED_PIN, LOW);
-    delay(1000);
-    digitalWrite(BLUE_LED_PIN, HIGH);
-    delay(1000);
-    digitalWrite(BLUE_LED_PIN, LOW);
-    delay(1000);
-
     // Read DHT11 sensor data
     float humidity = dht11.readHumidity();            // Read humidity
     float temperatureC = dht11.readTemperature();     // Read temperature in Celsius
@@ -98,7 +40,7 @@ void loop()
     }
 
     // Print sensor readings
-    Serial.println("=== DHT11 Sensor Readings ===");
+    Serial.println("========= DHT11 Sensor Readings =========");
     Serial.print("Temperature (Celsius): ");
     Serial.print(temperatureC);
     Serial.println(" °C");
@@ -108,59 +50,8 @@ void loop()
     Serial.print("Humidity: ");
     Serial.print(humidity);
     Serial.println(" %");
-    Serial.println("=============================");
-
-    // Print to OLED display
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.setTextColor(SSD1306_WHITE);
-    display.setCursor(0, 0);
-    display.println("WiFi: " + String(WiFi.isConnected() == 1 ? "Connected" : "Disconnected"));
-    display.println("IP: " + String(WiFi.localIP().toString()));
-    display.println("Temp_C: " + String(temperatureC) + " C");
-    display.println("Temp_F: " + String(temperatureF) + " F");
-    display.println("Humidity: " + String(humidity) + " %");
-    display.display();
-
-    // Play buzzer
-    digitalWrite(BUZZER_PIN, HIGH);
-    delay(1000);
-    digitalWrite(BUZZER_PIN, LOW);
-    delay(1000);
-}
-
-// Function definitions
-void initOled()
-{
-    // Initialize I2C with custom pins
-    Wire.begin(SDA_PIN, SCL_PIN);
-
-    // Initialize OLED display
-    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-
-    // Clear the display buffer
-    display.clearDisplay();
-
-    // Display startup message
-    display.setTextSize(1);              // Set text size
-    display.setTextColor(SSD1306_WHITE); // Set text color
-    display.setCursor(0, 0);             // Set cursor position
-    display.println("Initializing...");  // Display startup message
-    display.display();                   // Display the message
-}
-
-void connectWiFi()
-{
-    // Connect to WiFi
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-    // Wait for connection
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(1000);
-        Serial.println("Connecting to WiFi...");
-    }
-
-    // Print connection status
-    Serial.println("Connected to WiFi");
+    Serial.println(USER_EMAIL);
+    Serial.println("=========================================");
+    // Add a delay before the next reading
+    delay(3000);
 }
