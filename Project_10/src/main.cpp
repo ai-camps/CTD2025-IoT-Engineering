@@ -11,7 +11,7 @@ void setup()
 
 void loop()
 {
-    int pirStatus = digitalRead(PIR_PIN);
+    int pirStatus = analogRead(PIR_PIN);
     Serial.println("=== Motion Detection Information ===");
     Serial.print("PIR Sensor Status: ");
     Serial.println(pirStatus == HIGH ? "Motion Detected !!!" : "No Motion Detected");

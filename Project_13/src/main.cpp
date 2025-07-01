@@ -16,7 +16,7 @@ void setup()
     Serial.begin(115200);
 
     // Configure LED pin as output
-    pinMode(DHT11_PIN, OUTPUT); // Setup LED
+    pinMode(DHT11_PIN, INPUT); // Setup LED
 
     // Initialize DHT sensor
     dht11.begin();
@@ -28,9 +28,9 @@ void setup()
 void loop()
 {
     // Read DHT11 sensor data
-    float humidity = dht11.readHumidity();            // Read humidity
-    float temperatureC = dht11.readTemperature();     // Read temperature in Celsius
-    float temperatureF = dht11.readTemperature(true); // Read temperature in Fahrenheit
+    int humidity = dht11.readHumidity();            // Read humidity
+    int temperatureC = dht11.readTemperature();     // Read temperature in Celsius
+    int temperatureF = dht11.readTemperature(true); // Read temperature in Fahrenheit
 
     // Check if readings are valid
     if (isnan(humidity) || isnan(temperatureC) || isnan(temperatureF))

@@ -6,12 +6,12 @@ constexpr auto USER_EMAIL = "your.email@example.com";
 void setup()
 {
     Serial.begin(115200);
-    pinMode(COLLISION_SENSOR_PIN, INPUT);
+    pinMode(COLLISION_SENSOR_PIN, OUTPUT);
 }
 
 void loop()
 {
-    int pirStatus = digitalRead(COLLISION_SENSOR_PIN);
+    int pirStatus = analogRead(COLLISION_SENSOR_PIN);
     Serial.println("=== Collision Detection Information ===");
     Serial.print("Collision Sensor Status: ");
     Serial.println(pirStatus == LOW ? "Collision Detected !!!" : "No Collision Detected");

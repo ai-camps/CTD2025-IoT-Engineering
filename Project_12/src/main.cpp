@@ -6,12 +6,12 @@ constexpr auto USER_EMAIL = "your.email@example.com";
 void setup()
 {
     Serial.begin(115200);
-    pinMode(BUTTON_PIN, INPUT);
+    pinMode(BUTTON_PIN, OUTPUT);
 }
 
 void loop()
 {
-    int buttonStatus = digitalRead(BUTTON_PIN);
+    int buttonStatus = analogRead(BUTTON_PIN);
     Serial.println("=== Button Pressed Information ===");
     Serial.print("Button Status: ");
     Serial.println(buttonStatus == LOW ? "Button Pressed !!!" : "Button Not Pressed");
