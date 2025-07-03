@@ -1,26 +1,26 @@
 #include <Arduino.h>
 
-constexpr auto RED_LED_PIN = 4;
-constexpr auto GREEN_LED_PIN = 5;
-constexpr auto BLUE_LED_PIN = 6;
+constexpr auto RED_LED_PIN = 14;
+constexpr auto GREEN_LED_PIN = 15;
+constexpr auto BLUE_LED_PIN = 16;
 constexpr auto USER_EMAIL = "your.email@example.com";
 
 void setup()
 {
     Serial.begin(115200);
-    pinMode(RED_LED_PIN, OUTPUT);
-    pinMode(GREEN_LED_PIN, OUTPUT);
-    pinMode(BLUE_LED_PIN, OUTPUT);
+    pinMode(RED_LED_PIN, INPUT);
+    pinMode(GREEN_LED_PIN, INPUT);
+    pinMode(BLUE_LED_PIN, INPUT);
     delay(1000);
 
-    digitalWrite(RED_LED_PIN, HIGH);
-    digitalWrite(GREEN_LED_PIN, HIGH);
-    digitalWrite(BLUE_LED_PIN, HIGH);
+    analogWrite(RED_LED_PIN, 255);
+    analogWrite(GREEN_LED_PIN, 255);
+    analogWrite(BLUE_LED_PIN, 255);
     delay(1000);
 
-    digitalWrite(RED_LED_PIN, LOW);
-    digitalWrite(GREEN_LED_PIN, LOW);
-    digitalWrite(BLUE_LED_PIN, LOW);
+    analogWrite(RED_LED_PIN, 0);
+    analogWrite(GREEN_LED_PIN, 0);
+    analogWrite(BLUE_LED_PIN, 0);
 
     delay(1000);
 }
@@ -28,32 +28,32 @@ void setup()
 void loop()
 {
     // Green LED on for 1 second
-    digitalWrite(GREEN_LED_PIN, HIGH);
+    analogWrite(GREEN_LED_PIN, 255);
     Serial.print("Green LED Status: ");
-    Serial.println(digitalRead(GREEN_LED_PIN) == HIGH ? "ON" : "OFF");
+    Serial.println(analogRead(GREEN_LED_PIN) == HIGH ? "ON" : "OFF");
     delay(1000);
-    digitalWrite(GREEN_LED_PIN, LOW);
+    analogWrite(GREEN_LED_PIN, 0);
     Serial.print("Green LED Status: ");
-    Serial.println(digitalRead(GREEN_LED_PIN) == HIGH ? "ON" : "OFF");
+    Serial.println(analogRead(GREEN_LED_PIN) == HIGH ? "ON" : "OFF");
     delay(1000);
 
     // Red LED on for 1 second
-    digitalWrite(RED_LED_PIN, HIGH);
+    analogWrite(RED_LED_PIN, 255);
     Serial.print("Red LED Status: ");
-    Serial.println(digitalRead(RED_LED_PIN) == HIGH ? "ON" : "OFF");
+    Serial.println(analogRead(RED_LED_PIN) == HIGH ? "ON" : "OFF");
     delay(1000);
-    digitalWrite(RED_LED_PIN, LOW);
+    analogWrite(RED_LED_PIN, 0);
     Serial.print("Red LED Status: ");
-    Serial.println(digitalRead(RED_LED_PIN) == HIGH ? "ON" : "OFF");
+    Serial.println(analogRead(RED_LED_PIN) == HIGH ? "ON" : "OFF");
     delay(1000);
 
     // Blue LED on for 1 second
-    digitalWrite(BLUE_LED_PIN, HIGH);
+    analogWrite(BLUE_LED_PIN, 255);
     Serial.print("Blue LED Status: ");
-    Serial.println(digitalRead(BLUE_LED_PIN) == HIGH ? "ON" : "OFF");
+    Serial.println(analogRead(BLUE_LED_PIN) == HIGH ? "ON" : "OFF");
     delay(1000);
-    digitalWrite(BLUE_LED_PIN, LOW);
+    analogWrite(BLUE_LED_PIN, 0);
     Serial.print("Blue LED Status: ");
-    Serial.println(digitalRead(BLUE_LED_PIN) == HIGH ? "ON" : "OFF");
+    Serial.println(analogRead(BLUE_LED_PIN) == HIGH ? "ON" : "OFF");
     delay(1000);
 }
