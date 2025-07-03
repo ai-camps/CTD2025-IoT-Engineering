@@ -39,9 +39,6 @@ void setup()
     // Configure LED pin as output
     pinMode(DHT11_PIN, OUTPUT); // Setup LED
 
-    // Initialize DHT sensor
-    dht11.begin();
-
     // Initialize OLED display
     initOled();
 
