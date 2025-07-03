@@ -1,23 +1,62 @@
+
 #include <Arduino.h>
 
-constexpr auto FAN_PIN = 11;
+constexpr auto RED_LED_PIN = 14;
+constexpr auto GREEN_LED_PIN = 15;
+constexpr auto BLUE_LED_PIN = 16;
 constexpr auto USER_EMAIL = "your.email@example.com";
 
 void setup()
 {
-    Serial.begin(115200);
-    pinMode(FAN_PIN, OUTPUT);
+    pinMode(RED_LED_PIN, INPUT);
+    pinMode(GREEN_LED_PIN, INPUT);
+    pinMode(BLUE_LED_PIN, INPUT);
+    delay(1000);
+
+    analogWrite(RED_LED_PIN, 255);
+    analogWrite(GREEN_LED_PIN, 255);
+    analogWrite(BLUE_LED_PIN, 255);
+    delay(1000);
+
+    analogWrite(RED_LED_PIN, 0);
+    analogWrite(GREEN_LED_PIN, 0);
+    analogWrite(BLUE_LED_PIN, 0);
+
     delay(1000);
 }
 
 void loop()
 {
-    // Sound buzzer for 1 second
-    digitalWrite(FAN_PIN, HIGH);
-    Serial.println("Fan Status: ON");
-    delay(5000);
-    digitalWrite(FAN_PIN, LOW);
-    Serial.println("Fan Status: OFF");
-    delay(5000);
-    Serial.println(USER_EMAIL);
+
+    // Green LED on for 1 second
+    analogWrite(GREEN_LED_PIN, 255);
+    Serial.print("Green LED Status: ");
+    Serial.println(analogRead(GREEN_LED_PIN) == HIGH ? "ON" : "OFF");
+    delay(1000);
+    analogWrite(GREEN_LED_PIN, 0);
+    Serial.print("Green LED Status: ");
+    Serial.println(analogRead(GREEN_LED_PIN) == HIGH ? "ON" : "OFF");
+    delay(1000);
+
+    // Red LED on for 1 second
+    analogWrite(RED_LED_PIN, 255);
+    Serial.print("Red LED Status: ");
+    Serial.println(analogRead(RED_LED_PIN) == HIGH ? "ON" : "OFF");
+    delay(1000);
+    analogWrite(RED_LED_PIN, 0);
+    Serial.print("Red LED Status: ");
+    Serial.println(analogRead(RED_LED_PIN) == HIGH ? "ON" : "OFF");
+    delay(1000);
+
+    // Blue LED on for 1 second
+    analogWrite(BLUE_LED_PIN, 255);
+    Serial.print("Blue LED Status: ");
+    Serial.println(analogRead(BLUE_LED_PIN) == HIGH ? "ON" : "OFF");
+    delay(1000);
+    analogWrite(BLUE_LED_PIN, 0);
+    Serial.print("Blue LED Status: ");
+    Serial.println(analogRead(BLUE_LED_PIN) == HIGH ? "ON" : "OFF");
+    delay(1000);
+
+
 }
