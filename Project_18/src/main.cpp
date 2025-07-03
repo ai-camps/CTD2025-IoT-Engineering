@@ -33,8 +33,6 @@ void initOled();
 void setup()
 {
 
-    // Generate device ID
-    deviceID = String(ESP.getEfuseMac(), HEX);
 
     // Configure LED pin as output
     pinMode(DHT11_PIN, OUTPUT); // Setup LED
@@ -76,7 +74,7 @@ void loop()
 
     // --- OLED Display Update ---
     display.clearDisplay();
-    display.setTextSize(1);
+    display.setTextSize(4);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0); // Row 1: deviceID
     display.print("DeviceID:");
