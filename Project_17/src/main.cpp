@@ -35,6 +35,7 @@ void setup()
     Serial.println(deviceID);
     Serial.print("User Email: ");
     Serial.println(USER_EMAIL);
+    Serial.println("Hello World!");
 
     // Initialize OLED display
     initOled();
@@ -54,6 +55,8 @@ void loop()
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0);
     display.println("DeviceID:" + deviceID);
+    display.println("Hello World!");
+    display.println(USER_EMAIL);
     display.display();
 }
 
