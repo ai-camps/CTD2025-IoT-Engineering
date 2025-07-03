@@ -22,7 +22,7 @@ constexpr auto SCREEN_HEIGHT = 64;         // OLED display height
 constexpr auto OLED_RESET = -1;            // Reset pin (or -1 if sharing Arduino reset pin)
 constexpr auto SDA_PIN = 14;               // I2C SDA pin
 constexpr auto SCL_PIN = 15;               // I2C SCL pin
-constexpr auto SSD1306_I2C_ADDRESS = 0x3C; // OLED display address
+constexpr auto SSD1306_I2C_ADDRESS = 0x3D; // OLED display address
 
 // OLED display object
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
