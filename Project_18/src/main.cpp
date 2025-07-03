@@ -32,8 +32,6 @@ void initOled();
 
 void setup()
 {
-    // Initialize serial communication for debugging
-    Serial.begin(115200);
 
     // Generate device ID
     deviceID = String(ESP.getEfuseMac(), HEX);
@@ -108,8 +106,6 @@ void loop()
 // Function definitions
 void initOled()
 {
-    // Initialize I2C with custom pins
-    Wire.begin(SDA_PIN, SCL_PIN);
 
     // Initialize OLED display
     display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
