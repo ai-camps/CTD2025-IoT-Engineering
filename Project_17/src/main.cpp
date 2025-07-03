@@ -25,8 +25,6 @@ void initOled();
 
 void setup()
 {
-    // Initialize serial communication for debugging
-    Serial.begin(115200);
 
     // Generate device ID
     deviceID = String(ESP.getEfuseMac(), HEX);
@@ -58,6 +56,7 @@ void loop()
     display.println("Hello World!");
     display.println(USER_EMAIL);
     display.display();
+    delay(5000);
 }
 
 // Function definitions
