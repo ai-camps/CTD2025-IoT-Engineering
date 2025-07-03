@@ -33,7 +33,6 @@ void initOled();
 void setup()
 {
 
-
     // Configure LED pin as output
     pinMode(DHT11_PIN, OUTPUT); // Setup LED
 
@@ -103,7 +102,7 @@ void initOled()
 {
 
     // Initialize OLED display
-    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3D);
 
     // Clear the display buffer
     display.clearDisplay();
