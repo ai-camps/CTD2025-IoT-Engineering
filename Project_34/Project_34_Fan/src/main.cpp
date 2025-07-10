@@ -2,35 +2,19 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-constexpr int FAN_PIN = 1;
-// Define a constant for the default WiFi channel for ESP-NOW communication
+............
 constexpr int ESP_NOW_NETWORK_MODE = 1; // 0: Through Same WiFi Network, 1: Point-to-Point
 
 // Declare the MAC address of the slave and master devices for ESP-NOW communication
-uint8_t remoteMacAddress[] = {0xB0, 0x81, 0x84, 0xA8, 0xE6, 0xA4}; // the MAC address of the master device (present one) B0:81:84:A8:F1:BC
+uint8_t remoteMacAddress[] = {0xB0, 0x81, 0x84, 0xA8, 0xE6, 0xA4}; // !! Change to your peer's ESP32 MAC Address
 
-// Replace with your WiFi network credentials
-const char *ssid = "sesplearningstudios";
-const char *password = "@nn3nb3rg";
-
-// LED pins
-constexpr int LED_SETUP_PIN = 12; // LED 1: setup completion
-constexpr int LED_WIFI_PIN = 13;  // LED 2: WiFi connected
-
+............
 // function declarations
 void callbackCommandRecv(const uint8_t *mac, const uint8_t *incomingData, int len);
 
 void setup()
 {
-  Serial.begin(115200);
-  pinMode(FAN_PIN, OUTPUT);
-  digitalWrite(FAN_PIN, LOW); // Start with fan OFF
-
-  // Initialize LEDs
-  pinMode(LED_SETUP_PIN, OUTPUT);
-  pinMode(LED_WIFI_PIN, OUTPUT);
-  digitalWrite(LED_SETUP_PIN, LOW); // Off initially
-  digitalWrite(LED_WIFI_PIN, LOW);  // Off initially
+  ............
 
   WiFi.mode(WIFI_STA);
   if (ESP_NOW_NETWORK_MODE == 0)
@@ -62,7 +46,7 @@ void setup()
   }
   esp_now_register_recv_cb(callbackCommandRecv);
 
-  digitalWrite(LED_SETUP_PIN, HIGH); // Turn on setup complete LED
+  ............
 }
 
 void loop()
