@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/junwen/Desktop/Course Deck/CTD2025-IoT-Engineering/Project_36/Project_36_Tilt/src",
+      "program": "/Users/junwen/Desktop/Course Deck/CTD2025-IoT-Engineering/Project_36/Project_36_Tilt/src/build/Debug/outDebug"
+    }
+  ]
+}
