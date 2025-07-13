@@ -2,21 +2,34 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-............
+constexpr int BUTTON_PIN = 10;
 constexpr int ESP_NOW_NETWORK_MODE = 1; // 0: Through Same WiFi Network, 1: Point-to-Point
-............
+constexpr int LED_SETUP_PIN = 12;
+constexpr int LED_WIFI_PIN = 13;
 
-// MAC address of the remote device (the MAC Address of the ESP32 attaching Fan)
-uint8_t remoteMacAddress[] = {0xB0, 0x81, 0x84, 0xA9, 0x1F, 0x3C}; // !! You must change to your peer's ESP32 MAC Address
+// MAC address of the remote device (fan motor controller)
+uint8_t remoteMacAddress[] = {0xB0, 0x81, 0x84, 0xA9, 0x1F, 0x3C};
 
-............
+// WiFi credentials
+const char *ssid = "sesplearningstudios";
+const char *password = "@nn3nb3rg";
+
+// Button state tracking
+volatile bool buttonPressed = false;
+bool fanOn = false;
 
 // function declaration
 void IRAM_ATTR handleButtonInterrupt();
 
 void setup()
 {
-  ............
+  Serial.begin(115200);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(LED_SETUP_PIN, OUTPUT);
+  pinMode(LED_WIFI_PIN, OUTPUT);
+  digitalWrite(LED_SETUP_PIN, LOW); // Off initially
+  digitalWrite(LED_WIFI_PIN, LOW);  // Off initially
+  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), handleButtonInterrupt, FALLING);
 
   WiFi.mode(WIFI_STA);
   if (ESP_NOW_NETWORK_MODE == 0)
@@ -61,7 +74,7 @@ void setup()
     }
   }
 
-  ............
+  digitalWrite(LED_SETUP_PIN, HIGH); // Turn on setup complete LED
 }
 
 void loop()
