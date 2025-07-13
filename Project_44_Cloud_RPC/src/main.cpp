@@ -158,6 +158,9 @@ void setup()
   getStateCallback.Set_Callback([](const RPC_Data &data) -> RPC_Response
                                 { return getState(data); });
   tb.RPC_Subscribe(getStateCallback);
+
+  // Set setup done indicator
+  digitalWrite(SETUP_DONE_PIN, HIGH);
 }
 
 /**
